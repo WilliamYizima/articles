@@ -1,6 +1,6 @@
 import { Description } from 'src/dependency_inversion/core/Description.entity';
 import { CreateDescriptionDto } from 'src/dependency_inversion/dto/create-code_smell.dto';
-import { DescriptionRepository } from '../dependencyInversionRepository';
+import { DescriptionRepository } from '../../dependencyInversionRepository';
 
 export class InMemoryRepository implements DescriptionRepository {
   database_fake = [];

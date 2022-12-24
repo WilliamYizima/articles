@@ -1,4 +1,4 @@
-import { Description } from '../core/Description.entity';
+import { Description } from 'src/dependency_inversion/core/Description.entity';
 
 export interface DescriptionRepository {
   findAll(): Description[];

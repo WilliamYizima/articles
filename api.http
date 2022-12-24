@@ -8,6 +8,7 @@ Content-Type: application/json
 
 {
     "id":2,
+    "name":"tênis"
     "description":"testando"
 }
 
@@ -21,6 +22,6 @@ POST http://localhost:3000/dependency-inversion
 Content-Type: application/json
 
 {
-    "id":2,
-    "description":"testando"
+    "id":3,
+    "description":"testanado"
 }
