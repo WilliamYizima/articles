@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 
+node_modules
+
 # Runtime data
 pids
 *.pid
