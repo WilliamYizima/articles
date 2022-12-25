@@ -1,73 +1,70 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Princípio da Inversão de dependência
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+O objetivo é criar uma aplicação mais robusta e estável(sim, seguindo os princípios e arquitetura conseguimos testar de forma mais fácil) com isso teremos um crescimento 'saudável' 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Obs
 
-## Description
+Definições:
+- Módulo de alto nível -> podem ser classes que dependem de outras classes
+- Módulo de baixo nível -> são classes que não tem dependencia de outras classes
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Fazer requisições:
+- Utilize a extensão do VSCode "REST CLIENT" para testar o arquivo "api.http" e fazer as requisições
 
-## Installation
-
+Para rodar a aplicação:
 ```bash
-$ npm install
+  npm install
+  npm run start:dev
+```
+## Clean Arch
+
+- A estrutura utilizada foi pensada exatamente pela Clean Archtecture ([esse repo do fullCycle é sensacional para visualizar isso](https://github.com/codeedu/live-imersao-fullcycle8-nestjs-clean-architecture))
+
+![teste](/img/clean-arch.png)
+
+- Com essa estrutura, existe esta organização:
+```
+src/dependency_inversion
+|-core -> entities
+|-application -> use case
+L dependencyInversion.controller -> controller
 ```
 
-## Running the app
+## Solid
 
-```bash
-# development
-$ npm run start
+- S O L I **D(dependency inversion Principle)**
 
-# watch mode
-$ npm run start:dev
+Regras "faladas":
+- módulos de alto nível não devem depender de módulos de baixo nível, ambos devem depender de abstrações
 
-# production mode
-$ npm run start:prod
+- abstrações não devem depender de detalhes, detalhes devem depender de abstrações
+
+Observações importantes:
+- Para que a primeira "regra" não seja quebrada, é interessante criar uma classe com a única responsabilidade de instanciar(gerenciar) outras classes
+
+- Geralmente é chamado de "Factory" o arquivo que gerencia as classes, porém nesse exemplo o NestJS faz isso no arquivo : 'dependencyInversion.module'
+
+```javascript
+    {
+      provide: ListAllDescriptionUseCase,
+      useFactory: (routeRepo: DescriptionRepository) => {
+        return new ListAllDescriptionUseCase(routeRepo);
+      },
+      inject: [InMemoryRepository],
+    },
+```
+- Essa propriedade no módulo substitui a seguinte implementação:
+
+```javascript
+  const repo = new InMemoryRepository();
+  const createUseCase = new CreateDescriptionUseCase(repo);
+  console.log(body);
+  await createUseCase.execute(body);
+  console.log('foi criado');
+  const listUseCase = new ListAllDescriptionUseCase(repo);
+  await listUseCase.execute();
 ```
 
-## Test
+- A segunda regra de criação de abstrações é interessante criar interfaces
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- No código isso é visto no arquivo 'dependencyInversionRepository.ts' e essa interface é implementada em todos os repository's de forma que 'sigam o mesmo contrato criado pela interface'
