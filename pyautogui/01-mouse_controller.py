@@ -47,3 +47,28 @@ Pode ser útil obter a posição do mouse
 # print(position_mouse)
 
 # -----------------------------------------------------------------------------------
+
+"""
+Utilizando a funcao de click
+"""
+# pyautogui.click(x=500,y=500,button='right')
+# print('fiz um click')
+
+# -----------------------------------------------------------------------------------
+
+"""
+Utilizando a funcao de arrastar
+use o paint para visualizar o programa arrastar
+"""
+x_local_arquivo_inicial = 481
+y_local_arquivo_inicial = 354
+
+x_local_destino = 1064
+y_local_destino = 341
+
+x_distancia_relativa=x_local_destino - x_local_arquivo_inicial
+y_distancia_relativa=y_local_destino - y_local_arquivo_inicial
+
+pyautogui.moveTo(x=x_local_arquivo_inicial, y=y_local_arquivo_inicial)
+pyautogui.click()
+pyautogui.dragRel(x_distancia_relativa,y_distancia_relativa,duration=0.2,button="left")

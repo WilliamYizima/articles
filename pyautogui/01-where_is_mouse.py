@@ -1,3 +1,7 @@
+"""
+use esse script com o mouse em cima do paint
+"""
+
 import pyautogui
 
 try:
@@ -5,7 +9,7 @@ try:
 
     while True:
         x, y = pyautogui.position()
-        positionStr = f'X: {str(x)} - Y:{str(y)}'
+        positionStr = f'X: {str(x).rjust(4)} - Y:{str(y).rjust(4)}'
         # end= '' faz a quebra de linha
         print(f'{positionStr}', end='')
         # flush=True e end=''faz o efeito de substituição rapidamente do print

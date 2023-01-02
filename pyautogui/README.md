@@ -34,7 +34,14 @@ pip3 install pyautogui
 - O mouse é controlado por coordenadas, dessa forma o canto superior esquerdo é a coordenada (0,0)
 - Para mover para direita, a coordenada aumenta em X
 - para mover para baixo, a coordenada aumenta em y
+- mover o mouse - absoluto
+- mover o mouse - relativo
+- click com o mouse
+- arrastar com o mouse
 
 Obs:
 - caso a automação ocorra de forma inesperada, somente faça logout no seu user atual e o programa irá parar
 - Existe uma opção de "FailSave" no Pyautogui que ajuda a pausar ou parar a execução movento o mouse para cima e esquerda
+
+Fonte:
+- Automatize tarefas maçantes com Python
